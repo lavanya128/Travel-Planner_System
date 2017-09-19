@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Travel</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Pacifico" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+  
+<div class="container">
+
+
+  <h1>Tripzilla</h1>
+
+  <p>Live. Love. Travel.</p>
+
+</div>
+
+
+<div class="divider"></div>
+
+</br></br>
+
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col s12 m12">
+
+          <div class="card blue-grey darken-1">
+
+            <div class="card-content white-text">
+
+              <span class="card-title"><i class="material-icons">flight</i> Search for Flight</span>
+
+
+                <div class="row">
+    <form class="col s12">
+
+<div class="row">
+        <div class="input-field col s12">
+          <textarea id="flyingFrom" class="materialize-textarea"></textarea>
+          <label for="textarea1"><i class="material-icons">flight_takeoff</i> Flying From</label>
+        </div>
+      </div>
+
+
+     <div class="row">
+        <div class="input-field col s12">
+          <textarea id="flyingTo" class="materialize-textarea"></textarea>
+          <label for="textarea1"><i class="material-icons">flight_land</i> Flying To</label>
+        </div>
+      </div>
+
+     <div class="row">
+        <div class="input-field col s6">
+          <br></br>
+          <input type="date" id="datepicker departing" />
+          <label for="textarea1"><i class="material-icons">flight_takeoff</i> Departure Date</label>
+        </div>
+
+       <div class="input-field col s6">
+          <br></br>
+          <input type="date" id="datepicker returning" />
+          <label for="textarea1"><i class="material-icons">flight_land</i> Return Date</label>
+        </div>
+      </div>
+
+    <div class="row">
+      <div class="input-field col s6" id="adult">
+        <select id="adult">
+          <option value="" disabled selected>How Many Tickets?</option>
+          <option value="1">+1</option>
+          <option value="2">+2</option>
+          <option value="3">+3</option>
+          <option value="4">+4</option>
+          <option value="5">+5</option>
+          <option value="6">+6</option>
+        </select>
+        <label><i class="material-icons">group_add</i> Adult (18+)</label>
+      </div>
+
+      <div class="input-field col s6" id="children">
+        <select>
+          <option value="" disabled selected>How Many Tickets?</option>
+          <option value="1">+1</option>
+          <option value="2">+2</option>
+          <option value="3">+3</option>
+          <option value="4">+4</option>
+          <option value="5">+5</option>
+          <option value="6">+6</option>
+        </select>
+        <label><i class="material-icons">group_add</i> Children</label>
+      </div>
+
+    </div>  
+
+<div class="row"></div>
+<div class="row">
+  <div class="input-field col s3">
+    <a class="waves-effect waves-light btn" id="search">Search</a>
+  </div>
+</div>
+
+
+    </form>
+        </div>
+
+      </div>
+  
+        </div>
+
+    </div>
+
+</div>
+
+
+
+  
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+ <script>
+  $(document).ready(function() {
+    $('select').material_select();
+    var ele = " ";
+var ele1 =" ";
+var adultTicket;
+var date;
+var lat;
+var long;
+var obj = { };
+
+function codeAddress(ele,ele1,adultTicket,date) {
+    geocoder = new google.maps.Geocoder();
+    var address = document.getElementById("flyingTo").value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+
+      lat= results[0].geometry.location.lat();
+      long= results[0].geometry.location.lng();
+      console.log(lat);
+      console.log(long);
+      obj.ele=ele;
+      obj.ele1=ele1;
+      obj.adultTicket=adultTicket;
+      obj.date=date;
+      obj.lat=lat;
+      obj.long=long;
+      console.log(obj.ele);
+      console.log(obj.ele1);
+      console.log(obj.adultTicket);
+      console.log(obj.date);
+      console.log(obj.lat);
+      console.log(obj.long);
+
+      localStorage.setItem("obj",JSON.stringify(obj));
+      } 
+
+      else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+  }
+
+  $("#search").on("click",function()
+  {
+   
+    ele = $("#flyingFrom").val();
+    ele1=$("#flyingTo").val();
+    adultTicket=$("#adult option:selected").val();
+    date=$("#departing").val();
+
+console.log(ele);
+console.log(ele1);
+console.log(adultTicket);
+console.log(date);
+
+codeAddress(ele,ele1,adultTicket,date);
+
+window.location.href="results.html";
+
+  });
+
+
+
+
+
+  
+
+  })
+  </script>
+
+</body>
+</html>

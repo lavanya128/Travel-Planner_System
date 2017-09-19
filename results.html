@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Travel</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+	<link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Pacifico" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	
+<div class="container">
+
+
+	<h1>Tripzilla</h1>
+
+	<p>Live. Love. Travel.</p>
+
+</div>
+
+
+<div class="divider"></div>
+
+</br></br>
+
+
+<div class="container">
+
+  <div class="card blue-grey darken-1">
+  <div id="result">
+      <div class="card-content">
+      <p id="resultHead">Search Results</p>
+    </div>
+    <div class="card-tabs">
+      <ul class="tabs tabs-fixed-width" id="tabHead">
+        <li class="tab"><a href="#test4">Flights</a></li>
+        <li class="tab"><a href="#test5">Points of Interest</a></li>
+      </ul>
+    </div>
+    <div class="card-content blue lighten-4">
+
+      <div id="test4">
+
+		  <div class="col s12 m7">
+		    <div class="card horizontal">
+		      <div class="card-stacked">
+
+		      	<div class="divider"></div>
+
+		        <div class="card-content" id="flightInfo">	<div class="row">
+
+        <div class="col-lg-12">
+
+        <!-- Current Employees-->
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title"><strong><span id="sol"></span>      Solutions</strong></h3>
+            </div>
+            <div class="panel-body">
+              <table class="table table-hover" id='employee-table'>
+                <thead>
+                  <tr>
+                    <th>Flight Name</th>
+                     <th>Origin</th>
+                    <th>Departure Time</th>
+                    <th>Connection Duration</th>
+                    <th>Destination</th>
+                    <th>Arrival Time</th>
+                    <th>Total Trip($)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          </div>
+          </div>
+	                
+	                
+		        </div>
+
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+
+   
+
+      <div id="test5">
+
+    		<div class="col s12 m7">
+				<div class="card horizontal">
+				    <div class="card-stacked">
+
+				       <div class="card-content" id="flightInfo">
+				        	<div class="row">
+								<div class="panel-body">
+              <table class="table table-hover" id='employee-table1'>
+                <thead>
+                  <tr>
+                    <th>POI</th>
+                     <th>ADDRESS</th>
+                     </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+				    		</div>  
+				        </div>
+
+		       
+
+				    </div>
+				</div>
+			</div> 
+
+       </div>
+
+   	</div>
+   	</div>
+   </div>
+ </div>
+
+</div>
+<div id="map"></div>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUxt_Inhr3YRYiAIqp2UWQnl1WMXhcT0g&libraries=places&callback"></script>
+
+	<script>
+	$(document).ready(function() 
+	{
+		//$('select').material_select();
+
+		var obj=localStorage.getItem("obj");
+		console.log(JSON.parse(obj));
+		var objarr={};
+		objarr=JSON.parse(obj);
+
+		var ele = (objarr.ele);
+		var ele1 = (objarr.ele1);
+		var lat = objarr.lat;
+		var long = objarr.long;
+		console.log(objarr.ele);
+		console.log(objarr.ele1);
+		console.log(objarr.lat);
+		console.log(objarr.long);
+
+		var FlightRequest = {
+      "request": {
+        "slice": [
+          {
+            "origin": ele,
+            "destination": ele1,
+            "date": "2017-09-20"
+          }
+        ],
+        "passengers": {
+          "adultCount": 1,
+          "infantInLapCount": 0,
+          "infantInSeatCount": 0,
+          "childCount": 0,
+          "seniorCount": 0
+        },
+        "solutions": 10,
+        "refundable": false
+      }
+    };
+    
+	$.ajax(
+	{
+     	type: "POST",
+     //Set up your request URL and API Key.
+     	// url: "https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyBIjHWMEe33nbvDxx8C0z_ETWmoCm1FuTY", 
+     url:"https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyA7KqrZYamIJ2fEbygqESoGiBFtqRqq98g",
+     	contentType: 'application/json', // Set Content-type: application/json
+     	dataType: 'json',
+     // The query we want from Google QPX, This will be the variable we created in the beginning
+     	data: JSON.stringify(FlightRequest),
+     	success: function (data) {
+      //Once we get the result you can either send it to console or use it anywhere you like.
+      	console.log(data);
+     
+      	     console.log(data.trips.tripOption.length)
+      	     var solutions=data.trips.tripOption.length;
+            $("#sol").text(solutions);
+      	for(var i = 0; i< data.trips.tripOption.length; i++)
+      	{ 
+        	if(data.trips.tripOption.length === 0)
+        	{
+        
+        		console.log(JSON.stringify(data.trips.tripOption[i].saleTotal));
+        		$("#trip").text(JSON.stringify(data.trips.tripOption[i].saleTotal));
+        
+        		console.log(JSON.stringify(data.trips.tripOption[i].slice[i].duration));
+      			console.log(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].flight.carrier));
+      			console.log(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].flight.number));
+      			console.log(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].leg[i].arrivalTime));
+      			$("#timeArr").text(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].leg[i].arrivalTime));
+      			console.log(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].leg[i].departureTime));
+      			$("#timeDep").text(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].leg[i].departureTime));
+      			console.log(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].leg[i].destination));
+      			$("#airportArr").text(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].leg[i].destination));
+      			$("#airlineDepart1").text(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].flight.carrier));
+      			console.log(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].leg[i].origin));
+      			$("#airportDep").text(JSON.stringify(data.trips.tripOption[i].slice[i].segment[i].leg[i].origin));
+
+      			var deptTime=(data.trips.tripOption[i].slice[i].segment[i].leg[i].departureTime);
+      			var arrTime=(data.trips.tripOption[i].slice[i].segment[i].leg[i].arrivalTime);
+      			var dest=(data.trips.tripOption[i].slice[i].segment[i].leg[i].destination);
+      			var origin=(data.trips.tripOption[i].slice[i].segment[i].leg[i].origin);
+      			var cost=(data.trips.tripOption[i].saleTotal);
+      			var flightName=(data.trips.tripOption[i].slice[i].segment[i].flight.carrier);
+      			var flightNumber=(data.trips.tripOption[i].slice[i].segment[i].flight.number);
+      			$("#employee-table > tbody").append("<tr class='border'><td>" + flightName +  "</td><td>" + origin + "</td><td>" +
+  				deptTime + "</td><td>" + dest + "</td><td>" + arrTime + "</td><td>" + cost + "</td></tr>");
+  			}
+			if(data.trips.tripOption.length>=1)
+			{
+  				console.log(JSON.stringify(data.trips.tripOption[i].saleTotal));
+  				console.log(JSON.stringify(data.trips.tripOption[i].slice));
+  				console.log(JSON.stringify(data.trips.tripOption[i].slice.length));
+
+				for(var j=0; j < data.trips.tripOption[i].slice[0].segment.length; j++)
+				{
+  					console.log(JSON.stringify(data.trips.tripOption[i].slice[0].segment.length));
+  					console.log(JSON.stringify(data.trips.tripOption[i].slice[0].segment[j].duration));
+  					console.log(JSON.stringify(data.trips.tripOption[i].slice[0].segment[0].connectionDuration));
+  					
+  					console.log(JSON.stringify(data.trips.tripOption[i].slice[0].segment[j].leg));
+  
+  					console.log(JSON.stringify(data.trips.tripOption[i].slice[0].segment[j].leg[0].arrivalTime));
+   					console.log(JSON.stringify(data.trips.tripOption[i].slice[0].segment[j].leg[0].departureTime));
+  					console.log(JSON.stringify(data.trips.tripOption[i].slice[0].segment[j].leg[0].origin));
+ 					console.log(JSON.stringify(data.trips.tripOption[i].slice[0].segment[j].leg[0].destination));
+
+ 				var flightName=(data.trips.tripOption[i].slice[0].segment[j].flight.carrier);
+ 				var deptTime=(data.trips.tripOption[i].slice[0].segment[j].leg[0].departureTime);
+      			var arrTime=(data.trips.tripOption[i].slice[0].segment[j].leg[0].arrivalTime);
+      			var dest=(data.trips.tripOption[i].slice[0].segment[j].leg[0].destination);
+      			var origin=(data.trips.tripOption[i].slice[0].segment[j].leg[0].origin);
+      			var cost=(data.trips.tripOption[i].saleTotal);
+       			var flightNumber=(data.trips.tripOption[i].slice[0].segment[j].flight.number);
+       			console.log(JSON.stringify(data.trips.tripOption[i].slice[0].segment[j].flight.number));
+if(data.trips.tripOption[i].slice[0].segment.length > 1)
+{
+
+	var connectionDuration=(data.trips.tripOption[i].slice[0].segment[0].connectionDuration);
+	$("#employee-table > tbody").append("<tr class='border'><td>" + flightName + "</td><td>" +  origin + "</td><td>" + deptTime + "</td><td>" + connectionDuration + "</td><td>" + dest + "</td><td>" + arrTime + "</td><td>" + cost + "</td></tr>");
+
+
+}
+else{
+
+var connectionDuration = "-";
+	$("#employee-table > tbody").append("<tr class='border'><td>" + flightName + "</td><td>" +  origin + "</td><td>" + deptTime + "</td><td>" + connectionDuration + "</td><td>" + dest + "</td><td>" + arrTime + "</td><td>" + cost + "</td></tr>");
+}
+
+      			
+    		}
+}
+
+
+      }
+      
+//window.location.href = "results.html";
+    },
+      error: function(){
+       //Error Handling for our request
+       alert("Access to Google QPX Failed.");
+     }
+    });
+
+var map;
+		var infowindow;
+  function initMap() {
+		
+		//alert("working");
+        var pyrmont = {lat: lat, lng: long};
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: pyrmont,
+          zoom: 15
+        });
+
+        infowindow = new google.maps.InfoWindow();
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+          location: pyrmont,
+          radius: 1000,
+          type: ['store']
+        }, callback);
+      }
+
+      function callback(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+		console.log(results[i]);
+		console.log(results[i].name);
+		console.log(results[i].vicinity);
+		
+		var poi=results[i].name;
+		var address=results[i].vicinity;
+		$("#employee-table1 > tbody").append("<tr class='border'><td>" + poi + "</td><td>" + address +  "</td></tr><tr><hr></tr>");
+          }
+        }
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+      }
+initMap();
+	})
+
+
+
+	</script>
+	</body>
+</html>
